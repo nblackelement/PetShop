@@ -32,7 +32,7 @@ public class UserService {
         user.setLogin(data.getLogin());
         user.setPassword(data.getPassword());
         user.setKeyword("null");
-        user.setBalance(5000.0);
+        user.setBalance(5000.0f);
 
         userRepository.save(user);
 
@@ -74,8 +74,7 @@ public class UserService {
     }
 
 
-
-    private User tokenCheck(String bearerToken, String key) throws ServletException {
+    public User tokenCheck(String bearerToken, String key) throws ServletException {
 
         if (bearerToken == null || !bearerToken.startsWith("Bearer "))
             throw new ServletException("Missing or invalid Authorization header");
@@ -106,10 +105,11 @@ public class UserService {
 
         } catch (ExpiredJwtException e) {
 
-            throw new ServletException("JWToken expired");
+            throw new ExpiredJwtException(e.getHeader(), e.getClaims(), "JWToken expired. Please refresh your token");
         }
 
     }
+
 
 
     private String tokenBuilding(User user) {

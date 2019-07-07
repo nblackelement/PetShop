@@ -12,12 +12,12 @@ public class Item {
 
     private String type;
     private String name;
-    private double price;
+    private Float price;
 
 
     public Item() {}
 
-    public Item(int id, int price, String name, String type) {
+    public Item(int id, float price, String name, String type) {
         this.id = id;
         this.price = price;
         this.name = name;
@@ -25,12 +25,11 @@ public class Item {
     }
 
 
-
     public int getId() {
         return id;
     }
 
-    public double getPrice() {
+    public Float getPrice() {
         return price;
     }
 
@@ -46,7 +45,7 @@ public class Item {
         this.id = id;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(float price) {
         this.price = price;
     }
 

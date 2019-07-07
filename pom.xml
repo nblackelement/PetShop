@@ -12,7 +12,8 @@
     <modules>
         <module>user-service</module>
         <module>item-service</module>
-        <module>cart</module>
+        <module>cart-service</module>
+        <module>cart-service</module>
     </modules>
 
     <parent>

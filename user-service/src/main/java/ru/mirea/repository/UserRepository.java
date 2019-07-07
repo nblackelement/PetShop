@@ -6,7 +6,7 @@ import ru.mirea.model.User;
 
 
 @Repository
-public interface UserRepository extends CrudRepository<User, Long> {
+public interface UserRepository extends CrudRepository<User, Integer> {
 
     User save(User s);
     User findByLogin(String login);

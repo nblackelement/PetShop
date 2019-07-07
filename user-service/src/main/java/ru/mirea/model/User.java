@@ -10,12 +10,12 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     private String login;
     private String password;
     private String keyword;
-    private double balance;
+    private Float balance;
 
     public User() {}
 
@@ -40,7 +40,7 @@ public class User {
 
 
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -56,11 +56,11 @@ public class User {
         return keyword;
     }
 
-    public double getBalance() {
+    public Float getBalance() {
         return balance;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -76,7 +76,7 @@ public class User {
         this.keyword = keyword;
     }
 
-    public void setBalance(double balance) {
+    public void setBalance(float balance) {
         this.balance = balance;
     }
 

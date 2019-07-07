@@ -1,11 +1,15 @@
 package ru.mirea.controller;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.mirea.model.Login;
+import ru.mirea.model.User;
 import ru.mirea.service.UserService;
 
 import javax.servlet.ServletException;
+import java.util.HashMap;
+import java.util.Map;
 
 
 @RestController
@@ -41,6 +45,31 @@ public class UserController {
     public double showBalance(@RequestHeader(value="Authorization") String token) throws ServletException {
 
         return userService.getBalance(token);
+    }
+
+
+    @RequestMapping(value = "/check", method = RequestMethod.POST)
+    public Map<String, String> tokenCheck(@RequestBody Map<String, String> request) {
+
+        String token = request.get("token");
+        String keyword = request.get("keyword");
+        Map<String, String> map = new HashMap<>();
+
+        try {
+            User user = userService.tokenCheck(token, keyword);
+
+            map.put("response", "200");
+            map.put("user_id", user.getId().toString());
+            map.put("balance", user.getBalance().toString());
+
+        } catch (ServletException e) {
+            map.put("response", "401");
+
+        } catch (ExpiredJwtException e) {
+            map.put("response", "510");
+        }
+
+        return map;
     }
 
 
