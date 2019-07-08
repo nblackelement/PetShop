@@ -42,7 +42,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/balance", method = RequestMethod.GET)
-    public double showBalance(@RequestHeader(value="Authorization") String token) throws ServletException {
+    public float showBalance(@RequestHeader(value="Authorization") String token) throws ServletException {
 
         return userService.getBalance(token);
     }
@@ -70,6 +70,14 @@ public class UserController {
         }
 
         return map;
+    }
+
+    @RequestMapping(value = "/balance/update", method = RequestMethod.POST)
+    public void update(@RequestHeader(value="Authorization") String token,
+                         @RequestHeader(value="purchase") String value) throws ServletException {
+
+        float purchase = Float.parseFloat(value);
+        userService.balanceUpdate(token, purchase);
     }
 
 

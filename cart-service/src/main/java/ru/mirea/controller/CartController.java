@@ -42,12 +42,12 @@ public class CartController {
     }
 
     @RequestMapping(value = "/cart/pay", method = RequestMethod.POST)
-    public String payPurchases(@RequestHeader(value="user_id") String user_id, @RequestHeader(value="balance") String value) {
+    public String payPurchases(@RequestHeader(value="user_id") String user_id, @RequestHeader(value="balance") String value,
+                               @RequestHeader(value="Authorization") String token) throws ServletException {
 
         int userId = Integer.parseInt(user_id);
         float balance = Float.parseFloat(value);
-
-        return cartService.pay(userId, balance);
+        return cartService.pay(userId, balance, token);
     }
 
 

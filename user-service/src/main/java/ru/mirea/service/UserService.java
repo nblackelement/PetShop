@@ -67,7 +67,7 @@ public class UserService {
     }
 
 
-    public double getBalance(String token) throws ServletException {
+    public float getBalance(String token) throws ServletException {
 
         User user = tokenCheck(token, "secretkey");
         return user.getBalance();
@@ -108,6 +108,17 @@ public class UserService {
             throw new ExpiredJwtException(e.getHeader(), e.getClaims(), "JWToken expired. Please refresh your token");
         }
 
+    }
+
+
+    public void balanceUpdate(String token, float purchase) throws ServletException {
+
+        User user = tokenCheck(token, "secretkey");
+
+        float balance = user.getBalance() - purchase;
+        user.setBalance(balance);
+
+        userRepository.save(user);
     }
 
 

@@ -1,13 +1,14 @@
 package ru.mirea.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import ru.mirea.model.Cart;
+import ru.mirea.model.Item;
 import ru.mirea.repository.CartRepository;
 
 import javax.servlet.ServletException;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -54,20 +55,39 @@ public class CartService {
     }
 
 
-    public String pay(int userId, float balance) {
+    public String pay(int userId, float balance, String token) throws ServletException {
 
         List<Cart> cart = cartRepository.findByUserId(userId);
 
-        // Purchase
-        int sum = 0;
+        // Verification
+        Float sum = 0f;
         for (Cart cartEntity: cart) {
 
             int itemId = cartEntity.getItemId();
 
             RestTemplate restTemplate = new RestTemplate();
-            restTemplate.getForObject("http://localhost:8083/item/" + itemId, Object.class);
+            Item item = restTemplate.getForObject("http://localhost:8081/item/" + itemId, Item.class);
+
+            if (item == null)
+                throw new ServletException("Item " + itemId + ": not found.");
+            else
+                sum += item.getPrice();
         }
-        return "Done.";
+
+        // Purchase
+        if (sum <= balance) {
+
+            RestTemplate restTemplate = new RestTemplate();
+            HttpHeaders headers = new HttpHeaders();
+            headers.add("Authorization", token);
+            headers.add("purchase", sum.toString());
+            HttpEntity<String> httpEntity = new HttpEntity<>("parameters", headers);
+
+            restTemplate.exchange("http://localhost:8090/balance/update", HttpMethod.POST, httpEntity, String.class);
+            cartRepository.delete(cart);
+        }
+
+        return "Purchase Сompleted.";
     }
 
 
