@@ -3,6 +3,7 @@ package ru.mirea.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import ru.mirea.model.Cart;
 import ru.mirea.model.Item;
@@ -54,7 +55,7 @@ public class CartService {
         return "Deleted.";
     }
 
-
+    @Transactional
     public String pay(int userId, float balance, String token) throws ServletException {
 
         List<Cart> cart = cartRepository.findByUserId(userId);
